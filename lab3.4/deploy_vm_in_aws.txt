@@ -1,0 +1,467 @@
+# Lab
+
+1. Create a Directory and Write Your Terraform Code (Write)
+
+	- Create a new directory in the cloud_user's home directory to house your Terraform code called terraform_code.
+
+	- Create a new file for your code called main.tf.
+Add the provided code for creating your VM (as an EC2 instance in AWS) to the main.tf file.
+
+2. Plug the Provided AMI and Subnet ID Values Into Your Code
+
+	- Copy the AMI and subnet ID for the VM that have been saved in the resource_ids.txt file on the lab server.
+
+	- Paste these values into your code in the main.tf file.
+
+3. Initialize and Review Your Terraform Code (Plan)
+
+	- Initialize your Terraform configuration with the terraform init command.
+
+	- Review the actions that will be performed when code is deployed using the terraform plan command.
+
+4. Deploy Your Terraform Code (Apply), Verify Your Resources, and Clean Up
+
+	- Deploy the code with the terraform apply command.
+
+	- Verify that your resource was created as intended in the AWS Management Console.
+
+	- Tear down the infrastructure using the terraform destroy command.
+
+	- Verify that your resource was destroyed and removed in the AWS Management Console.
+
+## Complete code execution
+
+```text
+[cloud_user@ip-10-0-1-179 ~]$ ls -la
+total 20
+drwx------ 4 cloud_user cloud_user 131 Jul 22 14:11 .
+drwxr-xr-x 4 root       root        40 Mar 26  2020 ..
+drwxrwxr-x 2 cloud_user cloud_user  20 Jul 22 14:11 .aws
+-rw-r--r-- 1 cloud_user cloud_user  36 Dec  1  2021 .bash_history
+-rw-r--r-- 1 cloud_user cloud_user  18 Jan 16  2020 .bash_logout
+-rw-r--r-- 1 cloud_user cloud_user 193 Jan 16  2020 .bash_profile
+-rw-r--r-- 1 cloud_user cloud_user 231 Jan 16  2020 .bashrc
+drwx------ 2 cloud_user cloud_user  29 Jul 22 14:10 .ssh
+-rw-r--r-- 1 root       root        63 Jul 22 14:11 resource_ids.txt
+[cloud_user@ip-10-0-1-179 ~]$ cat resource_ids.txt 
+ami: ami-065efef2c739d613b
+subnet_id: subnet-0df1087225b1e2064
+[cloud_user@ip-10-0-1-179 ~]$ 
+[cloud_user@ip-10-0-1-179 ~]$ 
+[cloud_user@ip-10-0-1-179 ~]$ mkdir terraform_code
+[cloud_user@ip-10-0-1-179 ~]$ cd terraform_code/
+[cloud_user@ip-10-0-1-179 terraform_code]$ nano main.tf
+[cloud_user@ip-10-0-1-179 terraform_code]$ ls -la
+total 4
+drwxrwxr-x 2 cloud_user cloud_user  21 Jul 22 16:23 .
+drwx------ 5 cloud_user cloud_user 153 Jul 22 16:22 ..
+-rw-rw-r-- 1 cloud_user cloud_user 350 Jul 22 16:23 main.tf
+[cloud_user@ip-10-0-1-179 terraform_code]$ terraform init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/aws...
+- Installing hashicorp/aws v4.23.0...
+- Installed hashicorp/aws v4.23.0 (self-signed, key ID 34365D9472D7468F)
+
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://www.terraform.io/docs/plugins/signing.html
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+[cloud_user@ip-10-0-1-179 terraform_code]$ 
+[cloud_user@ip-10-0-1-179 terraform_code]$ terraform plan
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_instance.first_test_vm will be created
+  + resource "aws_instance" "first_test_vm" {
+      + ami                                  = "ami-065efef2c739d613b"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + subnet_id                            = "subnet-0df1087225b1e2064"
+      + tags                                 = {
+          + "Name" = "my-first-tf-node"
+        }
+      + tags_all                             = {
+          + "Name" = "my-first-tf-node"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification {
+          + capacity_reservation_preference = (known after apply)
+
+          + capacity_reservation_target {
+              + capacity_reservation_id                 = (known after apply)
+              + capacity_reservation_resource_group_arn = (known after apply)
+            }
+        }
+
+      + ebs_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + snapshot_id           = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + enclave_options {
+          + enabled = (known after apply)
+        }
+
+      + ephemeral_block_device {
+          + device_name  = (known after apply)
+          + no_device    = (known after apply)
+          + virtual_name = (known after apply)
+        }
+
+      + maintenance_options {
+          + auto_recovery = (known after apply)
+        }
+
+      + metadata_options {
+          + http_endpoint               = (known after apply)
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = (known after apply)
+          + instance_metadata_tags      = (known after apply)
+        }
+
+      + network_interface {
+          + delete_on_termination = (known after apply)
+          + device_index          = (known after apply)
+          + network_card_index    = (known after apply)
+          + network_interface_id  = (known after apply)
+        }
+
+      + private_dns_name_options {
+          + enable_resource_name_dns_a_record    = (known after apply)
+          + enable_resource_name_dns_aaaa_record = (known after apply)
+          + hostname_type                        = (known after apply)
+        }
+
+      + root_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+[cloud_user@ip-10-0-1-179 terraform_code]$ 
+[cloud_user@ip-10-0-1-179 terraform_code]$ 
+[cloud_user@ip-10-0-1-179 terraform_code]$ 
+[cloud_user@ip-10-0-1-179 terraform_code]$ terraform apply
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_instance.first_test_vm will be created
+  + resource "aws_instance" "first_test_vm" {
+      + ami                                  = "ami-065efef2c739d613b"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + subnet_id                            = "subnet-0df1087225b1e2064"
+      + tags                                 = {
+          + "Name" = "my-first-tf-node"
+        }
+      + tags_all                             = {
+          + "Name" = "my-first-tf-node"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification {
+          + capacity_reservation_preference = (known after apply)
+
+          + capacity_reservation_target {
+              + capacity_reservation_id                 = (known after apply)
+              + capacity_reservation_resource_group_arn = (known after apply)
+            }
+        }
+
+      + ebs_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + snapshot_id           = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + enclave_options {
+          + enabled = (known after apply)
+        }
+
+      + ephemeral_block_device {
+          + device_name  = (known after apply)
+          + no_device    = (known after apply)
+          + virtual_name = (known after apply)
+        }
+
+      + maintenance_options {
+          + auto_recovery = (known after apply)
+        }
+
+      + metadata_options {
+          + http_endpoint               = (known after apply)
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = (known after apply)
+          + instance_metadata_tags      = (known after apply)
+        }
+
+      + network_interface {
+          + delete_on_termination = (known after apply)
+          + device_index          = (known after apply)
+          + network_card_index    = (known after apply)
+          + network_interface_id  = (known after apply)
+        }
+
+      + private_dns_name_options {
+          + enable_resource_name_dns_a_record    = (known after apply)
+          + enable_resource_name_dns_aaaa_record = (known after apply)
+          + hostname_type                        = (known after apply)
+        }
+
+      + root_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_instance.first_test_vm: Creating...
+aws_instance.first_test_vm: Still creating... [10s elapsed]
+aws_instance.first_test_vm: Creation complete after 13s [id=i-06bcac9aba43a8cbd]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+[cloud_user@ip-10-0-1-179 terraform_code]$ terraform destroy
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_instance.first_test_vm will be destroyed
+  - resource "aws_instance" "first_test_vm" {
+      - ami                                  = "ami-065efef2c739d613b" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:562682080554:instance/i-06bcac9aba43a8cbd" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "us-east-1a" -> null
+      - cpu_core_count                       = 1 -> null
+      - cpu_threads_per_core                 = 2 -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-06bcac9aba43a8cbd" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t3.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - monitoring                           = false -> null
+      - primary_network_interface_id         = "eni-07cf332c88fe8f36d" -> null
+      - private_dns                          = "ip-10-0-1-23.ec2.internal" -> null
+      - private_ip                           = "10.0.1.23" -> null
+      - public_dns                           = "ec2-54-224-110-83.compute-1.amazonaws.com" -> null
+      - public_ip                            = "54.224.110.83" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-0df1087225b1e2064" -> null
+      - tags                                 = {
+          - "Name" = "my-first-tf-node"
+        } -> null
+      - tags_all                             = {
+          - "Name" = "my-first-tf-node"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data_replace_on_change          = false -> null
+      - vpc_security_group_ids               = [
+          - "sg-07ec7c2962f50e692",
+        ] -> null
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - credit_specification {
+          - cpu_credits = "unlimited" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_put_response_hop_limit = 1 -> null
+          - http_tokens                 = "optional" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/xvda" -> null
+          - encrypted             = false -> null
+          - iops                  = 100 -> null
+          - tags                  = {} -> null
+          - throughput            = 0 -> null
+          - volume_id             = "vol-0481ee692aab9b199" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp2" -> null
+        }
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+aws_instance.first_test_vm: Destroying... [id=i-06bcac9aba43a8cbd]
+aws_instance.first_test_vm: Still destroying... [id=i-06bcac9aba43a8cbd, 10s elapsed]
+aws_instance.first_test_vm: Still destroying... [id=i-06bcac9aba43a8cbd, 20s elapsed]
+aws_instance.first_test_vm: Destruction complete after 30s
+
+Destroy complete! Resources: 1 destroyed.
+[cloud_user@ip-10-0-1-179 terraform_code]$
+```
