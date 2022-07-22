@@ -1,1 +1,1 @@
-# Hashicorp Certificied Terraform Associate
+# Hashicorp Certified Terraform Associate
